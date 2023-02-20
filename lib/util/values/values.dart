@@ -35,3 +35,5 @@ const fontSubTitle5 = 10.0;
 const pageSize = 20;
 
 const debounceTime = 1000;
+
+const scrollThreshold = 100.0;

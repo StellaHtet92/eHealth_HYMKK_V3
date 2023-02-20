@@ -1,4 +1,4 @@
-import 'package:country_code_picker/country_code_picker.dart';
+import 'package:country_picker/country_picker.dart';
 import 'package:ehealth/routing/route_names.dart';
 import 'package:ehealth/ui/account_register/bloc/account_register_bloc.dart';
 import 'package:ehealth/ui/account_register/views/gender_tab.dart';
@@ -10,8 +10,6 @@ import 'package:ehealth/util/values/values.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../util/values/colors.dart';
 
 class AccountRegisterTwo extends StatelessWidget {
   const AccountRegisterTwo({super.key});
@@ -33,7 +31,6 @@ class _State extends State<_Stateful> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _mobileCtrl = TextEditingController();
   final TextEditingController _dobCtrl = TextEditingController();
-  final TextEditingController _genderCtrl = TextEditingController();
   var countryCode = '+95';
 
   void _showDatePicker(ctx) {
@@ -67,7 +64,7 @@ class _State extends State<_Stateful> {
     BlocProvider.of<AccountRegisterBloc>(context).add(OnGenderChanged(val));
   }
 
-  _onClickNext(){
+  _onClickNext() {
     FocusScope.of(context).requestFocus(FocusNode());
     if (_formKey.currentState?.validate() ?? false) {
       BlocProvider.of<AccountRegisterBloc>(context).add(OnPageTwoChanged(_mobileCtrl.text, _dobCtrl.text));
@@ -92,7 +89,7 @@ class _State extends State<_Stateful> {
               Positioned(
                 top: 0.0,
                 right: 0.0,
-                child:IconButton(
+                child: IconButton(
                   onPressed: () {
                     Navigator.pushNamedAndRemoveUntil(context, loginRoute, (Route<dynamic> route) => false);
                   },
@@ -119,27 +116,31 @@ class _State extends State<_Stateful> {
                               child: Text("Username", style: TextStyle(fontSize: fontSubTitle2)),
                             ),
                             Center(
-                              child: Text(state.accInfo.fullName, style: const TextStyle(fontSize: fontTitle,fontWeight: FontWeight.bold)),
+                              child: Text(state.accInfo.fullName, style: const TextStyle(fontSize: fontTitle, fontWeight: FontWeight.bold)),
                             ),
                             const SizedBox(height: m2),
                             Row(
                               children: [
-                                CountryCodePicker(
-                                  dialogSize: const Size(300.0, 500.0),
-                                  flagWidth: 15,
-                                  textStyle: const TextStyle(color: primaryColor, fontSize: fontSubTitle2),
-                                  padding: const EdgeInsets.only(left: p2, right: p2),
-                                  onChanged: (e) => {countryCode = e.toString()},
-                                  initialSelection: 'MM',
-                                  showCountryOnly: true,
-                                  favorite: ['+95', 'MM'],
+                                TextButton(
+                                  onPressed: () {
+                                    showCountryPicker(
+                                      context: context,
+                                      showPhoneCode: true,
+                                      onSelect: (Country country) {
+                                        setState(() {
+                                          countryCode = "+${country.phoneCode}";
+                                        });
+                                      },
+                                    );
+                                  },
+                                  child: Text(countryCode),
                                 ),
                                 Expanded(
                                   child: TextFormField(
                                     controller: _mobileCtrl,
                                     validator: (value) => value != null && value.isEmpty ? "* required" : null,
                                     keyboardType: TextInputType.phone,
-                                    decoration: customInputDeco("Mobile Number",const Icon(Icons.phone)),
+                                    decoration: customInputDeco("Mobile Number", const Icon(Icons.phone)),
                                   ),
                                 )
                               ],
@@ -158,7 +159,7 @@ class _State extends State<_Stateful> {
                                   isDense: true,
                                   prefixIcon: const Icon(Icons.calendar_month),
                                   errorStyle: TextStyle(
-                                    color: Theme.of(context).errorColor, // or any other color
+                                    color: Theme.of(context).colorScheme.error, // or any other color
                                   ),
                                   disabledBorder: const OutlineInputBorder(
                                     borderSide: BorderSide(color: Colors.grey, width: 1.0),
@@ -207,11 +208,7 @@ class _State extends State<_Stateful> {
                     _onClickNext();
                   },
                   child: Row(
-                    children: const [
-                      Text("Next"),
-                      SizedBox(width: m2),
-                      Icon(Icons.navigate_next)
-                    ],
+                    children: const [Text("Next"), SizedBox(width: m2), Icon(Icons.navigate_next)],
                   ),
                 ),
               ),

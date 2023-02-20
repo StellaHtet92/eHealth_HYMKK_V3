@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
+
 import 'values/colors.dart';
 import 'values/values.dart';
-import 'package:intl/intl.dart';
-import 'widgets/loading_overlay.dart';
 
-showToast(String msg, BuildContext context,{Color? bgColor,IconData? icon,Color? textColor}) {
+showToast(String msg, BuildContext context, {Color? bgColor, IconData? icon, Color? textColor}) {
   FToast fToast = FToast();
   fToast.init(context);
   fToast.showToast(
@@ -48,36 +48,11 @@ String changeDateFormat1(String date) {
   return "";
 }
 
-String changeDateFormat2(String date) {
+String changeDateTimeFormatForGraph(String date) {
   if (date != "") {
     DateTime dateTime = DateTime.parse(date);
-    String formattedDate = DateFormat("yyyy-MM-dd").format(dateTime);
+    String formattedDate = DateFormat("MMM dd, hh:mm a").format(dateTime);
     return formattedDate;
   }
   return "";
-}
-
-String changeDateTimeFormat(String date) {
-  if (date != "") {
-    DateTime dateTime = DateTime.parse(date);
-    String formattedDate = DateFormat("yyyy-MM-dd hh:mm:ss").format(dateTime);
-    return formattedDate;
-  }
-  return "";
-}
-
-double getDialogWidth(double deviceWidth) {
-  return deviceWidth > 1024.0 ? deviceWidth * 0.3 : 450.0;
-}
-
-showLoaderDialog({required BuildContext context,required  String message}){
-  Navigator.of(context).push(LoadingOverlay(message));
-}
-
-extension EmailValidator on String {
-  bool isValidEmail() {
-    return RegExp(
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
-        .hasMatch(this);
-  }
 }

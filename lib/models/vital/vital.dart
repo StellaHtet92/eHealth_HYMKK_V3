@@ -4,6 +4,7 @@ part 'vital.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.none)
 class Vital {
+  late int id;
   late int bpSys;
   late int bpDia;
   late int pulse;
@@ -11,8 +12,15 @@ class Vital {
   late double spO2;
   late double bloodSugarLevel;
   late bool isBeforeMeal;
+  late int hdl;
+  late int ldl;
+  late int heartRate;
+  late int ews;
+  late String lastMenDate;
+  late String createdDateTime;
 
   Vital({
+    this.id = 0,
     this.bpSys = 0,
     this.bpDia = 0,
     this.pulse = 0,
@@ -20,9 +28,16 @@ class Vital {
     this.spO2 = 0.0,
     this.bloodSugarLevel = 0.0,
     this.isBeforeMeal = false,
+    this.hdl = 0,
+    this.ldl = 0,
+    this.heartRate = 0,
+    this.ews = 0,
+    this.lastMenDate= "",
+    this.createdDateTime = ""
   });
 
   Vital.copy(Vital vital) {
+    id = vital.id;
     bpSys = vital.bpSys;
     bpDia = vital.bpDia;
     pulse = vital.pulse;
@@ -30,6 +45,11 @@ class Vital {
     spO2 = vital.spO2;
     bloodSugarLevel = bloodSugarLevel;
     isBeforeMeal = vital.isBeforeMeal;
+    hdl = vital.hdl;
+    ldl = vital.ldl;
+    heartRate = vital.heartRate;
+    lastMenDate = vital.lastMenDate;
+    createdDateTime = vital.createdDateTime;
   }
 
   factory Vital.fromJson(Map<String, dynamic> json) {

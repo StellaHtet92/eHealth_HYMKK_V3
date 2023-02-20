@@ -1,9 +1,15 @@
 import 'package:ehealth/core/user_pref.dart';
-import 'package:ehealth/models/account.dart';
+import 'package:ehealth/repository/vital_repo.dart';
 import 'package:ehealth/routing/route_names.dart';
+import 'package:ehealth/ui/home/bloc/home_page_bloc.dart';
+import 'package:ehealth/ui/home/views/display_type_view.dart';
+import 'package:ehealth/ui/home/views/vital_chart_view.dart';
+import 'package:ehealth/ui/home/views/vital_list_view.dart';
 import 'package:ehealth/util/values/colors.dart';
+import 'package:ehealth/util/values/string.dart';
 import 'package:ehealth/util/values/values.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 class HomePage extends StatelessWidget {
@@ -11,7 +17,10 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _Stateful();
+    return BlocProvider(
+      create: (context) => HomePageBloc(VitalRepo()),
+      child: _Stateful(),
+    );
   }
 }
 
@@ -26,6 +35,7 @@ class _State extends State<_Stateful> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0.0,
@@ -61,7 +71,16 @@ class _State extends State<_Stateful> {
           ),
         ],
       ),
-      body: Container(),
+      body: Column(
+        children: [
+          const DisplayTypeView(),
+          Expanded(
+            child: BlocBuilder<HomePageBloc, HomePageState>(builder: (context, state) {
+              return state.displayType == DisplayType.Chart.name ? const VitalChartView() : const VitalListView();
+            }),
+          )
+        ],
+      ),
       floatingActionButton: SpeedDial(
         animatedIcon: AnimatedIcons.menu_close,
         spacing: 12,
@@ -70,13 +89,14 @@ class _State extends State<_Stateful> {
           SpeedDialChild(
               child: const Icon(Icons.monitor_heart),
               label: 'ADD VITAL',
-              onTap: () async {
-                Account? account = await UserPref().getAccount();
-                if (account != null && account.basicInfo) {
-                  Navigator.pushNamed(context, addVitalRoute);
-                } else {
-                  Navigator.pushNamed(context, basicInfoRoute);
-                }
+              onTap: () {
+                UserPref().getAccount().then((account) {
+                  if (account != null && account.basicInfo) {
+                    Navigator.pushNamed(context, addVitalRoute);
+                  } else {
+                    Navigator.pushNamed(context, basicInfoRoute);
+                  }
+                });
               })
         ],
       ),
