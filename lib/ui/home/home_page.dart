@@ -2,6 +2,8 @@ import 'package:ehealth/core/user_pref.dart';
 import 'package:ehealth/repository/vital_repo.dart';
 import 'package:ehealth/routing/route_names.dart';
 import 'package:ehealth/ui/home/bloc/home_page_bloc.dart';
+import 'package:ehealth/ui/home/bloc/vital_chart_bloc.dart';
+import 'package:ehealth/ui/home/bloc/vital_list_bloc.dart';
 import 'package:ehealth/ui/home/views/display_type_view.dart';
 import 'package:ehealth/ui/home/views/vital_chart_view.dart';
 import 'package:ehealth/ui/home/views/vital_list_view.dart';
@@ -32,6 +34,14 @@ class _Stateful extends StatefulWidget {
 }
 
 class _State extends State<_Stateful> {
+
+  @override
+  void initState() {
+    BlocProvider.of<VitalListBloc>(context).add(LoadData(loadMore: false));
+    BlocProvider.of<VitalChartBloc>(context).add(InitVitalChart());
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

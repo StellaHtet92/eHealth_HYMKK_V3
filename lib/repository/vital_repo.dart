@@ -15,6 +15,7 @@ class VitalRepo {
   }
 
   Future<ApiResult<String>> saveVital(Vital v) async {
+    print(v.toJson().toString());
     return UserPref().getAccount().then((acc) async {
       try {
         final response = await dioClient.post("/vital/add?id=${acc?.userId}", data: v.toJson());

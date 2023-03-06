@@ -1,5 +1,7 @@
 import 'package:ehealth/models/vital/vital.dart';
 import 'package:ehealth/ui/account_register/views/gender_tab.dart';
+import 'package:ehealth/ui/home/bloc/vital_chart_bloc.dart';
+import 'package:ehealth/ui/home/bloc/vital_list_bloc.dart';
 import 'package:ehealth/ui/vital/bloc/add_vital_bloc.dart';
 import 'package:ehealth/util/models/page_state.dart';
 import 'package:ehealth/util/style/customInputDecoration.dart';
@@ -38,6 +40,8 @@ class _State extends State<_Stateful> {
     return BlocListener<VitalBloc, VitalState>(
       listener: (context, state) {
         if (state.pageState.state == PageState.successState) {
+          BlocProvider.of<VitalListBloc>(context).add(LoadData(loadMore: false));
+          BlocProvider.of<VitalChartBloc>(context).add(InitVitalChart());
           Navigator.pop(context);
         } else if (state.pageState.state == PageState.failState) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.pageState.message)));
@@ -143,6 +147,33 @@ class _State extends State<_Stateful> {
                       decoration: customInputDeco("", null, suffix: "min"),
                       onSaved: (String? data) {
                         vital.pulse = int.parse(data!);
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: m1),
+              Container(
+                color: Colors.white,
+                padding: const EdgeInsets.all(m2),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text("Heart Rate", style: TextStyle(fontSize: fontSubTitle, fontWeight: FontWeight.bold)),
+                    const SizedBox(height: m1),
+                    TextFormField(
+                      keyboardType: TextInputType.number,
+                      validator: (value) {
+                        if (value != null && value.isEmpty) {
+                          return "* required";
+                        } else {
+                          int? data = int.tryParse(value!);
+                          return data != null ? null : "* invalid.";
+                        }
+                      },
+                      decoration: customInputDeco("", null, suffix: "bpm"),
+                      onSaved: (String? data) {
+                        vital.heartRate = int.parse(data!);
                       },
                     ),
                   ],

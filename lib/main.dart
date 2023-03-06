@@ -1,4 +1,6 @@
 import 'package:ehealth/repository/account_repo.dart';
+import 'package:ehealth/repository/vital_repo.dart';
+import 'package:ehealth/routing/redirect_config.dart';
 import 'package:ehealth/routing/route_names.dart';
 import 'package:ehealth/routing/router.dart';
 import 'package:ehealth/ui/account_register/account_register_one.dart';
@@ -6,15 +8,16 @@ import 'package:ehealth/ui/account_register/account_register_three.dart';
 import 'package:ehealth/ui/account_register/account_register_two.dart';
 import 'package:ehealth/ui/account_register/bloc/account_register_bloc.dart';
 import 'package:ehealth/ui/basic_info/basic_info.dart';
+import 'package:ehealth/ui/home/bloc/vital_chart_bloc.dart';
+import 'package:ehealth/ui/home/bloc/vital_list_bloc.dart';
 import 'package:ehealth/ui/home/home_page.dart';
 import 'package:ehealth/ui/login/login_page.dart';
-import 'package:ehealth/routing/redirect_config.dart';
 import 'package:ehealth/ui/vital/add_vital_page.dart';
 import 'package:ehealth/util/values/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   RedirectPage page = await checkSession();
 
@@ -24,7 +27,7 @@ void main() async{
 class MyApp extends StatelessWidget {
   final RedirectPage page;
 
-  const MyApp({required this.page,super.key});
+  const MyApp({required this.page, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +35,12 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => AccountRegisterBloc(AccountRepo()),
+        ),
+        BlocProvider(
+          create: (context) => VitalChartBloc(VitalRepo()),
+        ),
+        BlocProvider(
+          create: (context) => VitalListBloc(VitalRepo()),
         ),
       ],
       child: MaterialApp(
@@ -59,11 +68,8 @@ class MyApp extends StatelessWidget {
               return getPageRoute(const BasicInfoPage(), settings);
           }
         },
-        initialRoute: page == RedirectPage.login
-            ? loginRoute
-            : homeRoute,
+        initialRoute: page == RedirectPage.login ? loginRoute : homeRoute,
       ),
     );
   }
 }
-

@@ -31,6 +31,7 @@ class _State extends State<_Stateful> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _mobileCtrl = TextEditingController();
   final TextEditingController _dobCtrl = TextEditingController();
+  DateTime date = DateTime.now();
   var countryCode = '+95';
 
   void _showDatePicker(ctx) {
@@ -47,6 +48,7 @@ class _State extends State<_Stateful> {
                   mode: CupertinoDatePickerMode.date,
                   dateOrder: DatePickerDateOrder.ydm,
                   onDateTimeChanged: (val) {
+                    date = val;
                     _dobCtrl.text = changeDateFormat1(val.toString());
                   }),
             ),
@@ -67,7 +69,7 @@ class _State extends State<_Stateful> {
   _onClickNext() {
     FocusScope.of(context).requestFocus(FocusNode());
     if (_formKey.currentState?.validate() ?? false) {
-      BlocProvider.of<AccountRegisterBloc>(context).add(OnPageTwoChanged(_mobileCtrl.text, _dobCtrl.text));
+      BlocProvider.of<AccountRegisterBloc>(context).add(OnPageTwoChanged(_mobileCtrl.text, date.toString()));
       Navigator.pushNamedAndRemoveUntil(context, registerThreeRoute, (Route<dynamic> route) => false);
     }
   }
@@ -116,7 +118,7 @@ class _State extends State<_Stateful> {
                               child: Text("Username", style: TextStyle(fontSize: fontSubTitle2)),
                             ),
                             Center(
-                              child: Text(state.accInfo.fullName, style: const TextStyle(fontSize: fontTitle, fontWeight: FontWeight.bold)),
+                              child: Text(state.accInfo.fullname, style: const TextStyle(fontSize: fontTitle, fontWeight: FontWeight.bold)),
                             ),
                             const SizedBox(height: m2),
                             Row(

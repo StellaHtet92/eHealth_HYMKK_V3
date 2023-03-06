@@ -39,6 +39,10 @@ showToast(String msg, BuildContext context, {Color? bgColor, IconData? icon, Col
       });
 }
 
+DateTime changeDateFormat(String date){
+  return  DateTime.parse(date);
+}
+
 String changeDateFormat1(String date) {
   if (date != "") {
     DateTime dateTime = DateTime.parse(date);

@@ -10,7 +10,7 @@ class VitalChartBloc extends Bloc<VitalChartEvent, VitalChartState> {
   final VitalRepo repo;
 
   VitalChartBloc(this.repo) : super(VitalChartState.initial()) {
-    on<Init>((event, emit) async {
+    on<InitVitalChart>((event, emit) async {
       ApiResult<List<Vital>> apiResult = await repo.fetchVital(1);
       apiResult.when(success: (List<Vital> result) {
         emit(state.copyWith(pageState: PageState(state: PageState.successState),result: result));
@@ -44,4 +44,4 @@ abstract class VitalChartEvent {
   const VitalChartEvent();
 }
 
-class Init extends VitalChartEvent{}
+class InitVitalChart extends VitalChartEvent{}

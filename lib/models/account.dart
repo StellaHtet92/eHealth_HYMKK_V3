@@ -5,8 +5,8 @@ part 'account.g.dart';
 @JsonSerializable(fieldRename: FieldRename.none)
 class Account {
   late int userId;
-  late String userName;
-  late String fullName;
+  late String username;
+  late String fullname;
   late String? mobile;
   late String dob;
   late String? gender;
@@ -15,8 +15,8 @@ class Account {
 
   Account({
     this.userId = 0,
-    this.fullName = "",
-    this.userName = "",
+    this.fullname = "",
+    this.username = "",
     this.dob = "",
     this.mobile = "",
     required this.gender,
@@ -26,8 +26,8 @@ class Account {
 
   Account.copy(Account acc) {
     userId = acc.userId;
-    fullName = acc.fullName;
-    userName = acc.userName;
+    fullname = acc.fullname;
+    username = acc.username;
     dob = acc.dob;
     mobile = acc.mobile;
     gender = acc.gender;

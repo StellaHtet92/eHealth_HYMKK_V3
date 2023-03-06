@@ -1,4 +1,3 @@
-import 'package:ehealth/repository/vital_repo.dart';
 import 'package:ehealth/ui/home/bloc/vital_chart_bloc.dart';
 import 'package:ehealth/ui/home/views/one_line_chart_view.dart';
 import 'package:ehealth/ui/home/views/two_line_chart_view.dart';
@@ -12,10 +11,7 @@ class VitalChartView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => VitalChartBloc(VitalRepo())..add(Init()),
-      child: _Stateful(),
-    );
+    return _Stateful();
   }
 }
 
@@ -27,6 +23,7 @@ class _Stateful extends StatefulWidget {
 }
 
 class _State extends State<_Stateful> {
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<VitalChartBloc, VitalChartState>(builder: (context, state) {

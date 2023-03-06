@@ -14,8 +14,8 @@ class AccountRegisterBloc extends Bloc<AccountRegisterEvent, AccountRegisterStat
   AccountRegisterBloc(this.repo) : super(AccountRegisterState.initial()) {
     on<OnPageOneChanged>((event, emit) async {
       Account account = Account.copy(state.accInfo);
-      account.userName = event.userName;
-      account.fullName = event.fullName;
+      account.username = event.userName;
+      account.fullname = event.fullName;
       emit(state.copyWith(accInfo: account));
     });
     on<OnGenderChanged>((event, emit) async {

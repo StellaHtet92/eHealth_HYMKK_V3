@@ -17,10 +17,7 @@ class VitalListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => VitalListBloc(VitalRepo())..add(LoadData(loadMore: false)),
-      child: _Stateful(),
-    );
+    return _Stateful();
   }
 }
 

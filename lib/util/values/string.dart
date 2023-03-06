@@ -1,4 +1,4 @@
-String apiUrl = "https://private-b2111f-hymkk.apiary-mock.com";
+String apiUrl = "http://192.168.1.3:8080";
 
 enum HomeMenu { Profile , Logout }
 

@@ -18,7 +18,7 @@ class AccountRepo{
   Future<ApiResult<Account>> login(String userName,String password) async {
     try {
       Map<String, dynamic> data = {"username": userName, "password": password};
-      final response = await dioClient.post("/login", data: data);
+      final response = await dioClient.post("/user/login", data: data);
       Account account = Account.fromJson(response);
       return ApiResult.success(account);
     } catch (e) {
@@ -27,8 +27,9 @@ class AccountRepo{
   }
 
   Future<ApiResult<Account>> register(Account userAcc) async {
+    print(userAcc.toJson());
     try {
-      final response = await dioClient.post("/register", data: userAcc.toJson());
+      final response = await dioClient.post("/user/register", data: userAcc.toJson());
       Account account = Account.fromJson(response);
       return ApiResult.success(account);
     } catch (e) {
@@ -39,7 +40,7 @@ class AccountRepo{
   Future<ApiResult<String>> saveBasicInfo(BasicInfo info) async {
     return UserPref().getAccount().then((acc) async {
       try {
-        final response = await dioClient.post("/info/basic?id=${acc?.userId}", data: info.toJson());
+        final response = await dioClient.post("/user/info/basic?id=${acc?.userId}", data: info.toJson());
         ErrorModel responseModel = ErrorModel.fromJson(response);
         return ApiResult.success(responseModel.message);
       } catch (e) {
