@@ -85,6 +85,12 @@ class FourthView extends StatelessWidget {
                 final form = _formKey.currentState;
                 if (form?.validate() ?? false) {
                   form?.save();
+                  BasicInfo i = BasicInfo.copy(state.info);
+                  if(i.height!>=0 && i.weight!>=0)
+                  {
+                    double meter=i.height!/100;
+                    i.bmi=i.weight!/(meter * meter);
+                  }
                   BlocProvider.of<BasicInfoBloc>(context).add(OnPageIndexChanged(state.pageIndex + 1));
                 }
               },

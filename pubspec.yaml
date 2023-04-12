@@ -57,6 +57,7 @@ dependencies:
 
   syncfusion_flutter_charts: ^20.1.56
   syncfusion_flutter_datagrid: ^20.1.52
+  tflite_flutter: ^0.9.0
 
 dev_dependencies:
   flutter_test:
@@ -97,6 +98,7 @@ flutter:
   assets:
       - images/icons/
       - images/
+      - assets/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
