@@ -34,34 +34,6 @@ class _State extends State<_Stateful> {
   DateTime date = DateTime.now();
   var countryCode = '+95';
 
-  void _showDatePicker(ctx) {
-    showCupertinoModalPopup(
-      context: ctx,
-      builder: (_) => Container(
-        height: 250,
-        color: const Color.fromARGB(255, 255, 255, 255),
-        child: Column(
-          children: [
-            SizedBox(
-              height: 180,
-              child: CupertinoDatePicker(
-                  mode: CupertinoDatePickerMode.date,
-                  dateOrder: DatePickerDateOrder.ydm,
-                  onDateTimeChanged: (val) {
-                    date = val;
-                    _dobCtrl.text = changeDateFormat1(val.toString());
-                  }),
-            ),
-            CupertinoButton(
-              child: const Text('OK'),
-              onPressed: () => Navigator.of(ctx).pop(),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
   _onGenderChange(String val) {
     BlocProvider.of<AccountRegisterBloc>(context).add(OnGenderChanged(val));
   }
@@ -151,7 +123,10 @@ class _State extends State<_Stateful> {
                             InkWell(
                               onTap: () {
                                 FocusScope.of(context).unfocus();
-                                _showDatePicker(context);
+                                showAppDatePicker(context,onDateChanged:(val){
+                                  date = val;
+                                  _dobCtrl.text = changeDateFormat1(val.toString());
+                                });
                               },
                               child: TextFormField(
                                 enabled: false,

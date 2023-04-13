@@ -1,3 +1,5 @@
+import 'package:ehealth/core/user_pref.dart';
+import 'package:ehealth/models/account.dart';
 import 'package:ehealth/models/vital/vital.dart';
 import 'package:ehealth/repository/services/api_result.dart';
 import 'package:ehealth/repository/services/network_exceptions.dart';
@@ -10,6 +12,10 @@ class VitalBloc extends Bloc<VitalEvent, VitalState> {
   final VitalRepo repo;
 
   VitalBloc(this.repo) : super(VitalState.initial()) {
+    on<LoadUserSession>((event, emit) async {
+      Account? account = await UserPref().getAccount();
+      emit(state.copyWith(account: account));
+    });
     on<OnSaveEvent>((event, emit) async {
       ApiResult<String> apiResult = await repo.saveVital(event.v);
       apiResult.when(success: (String msg) {
@@ -24,22 +30,24 @@ class VitalBloc extends Bloc<VitalEvent, VitalState> {
 class VitalState extends Equatable {
   final PageState pageState;
   final int pageIndex;
+  final Account? account;
   final Vital v;
 
-  const VitalState({required this.pageState, required this.pageIndex, required this.v});
+  const VitalState({required this.pageState, required this.pageIndex,this.account, required this.v});
 
   VitalState.initial() : this(pageState: PageState(), pageIndex: 0, v: Vital());
 
-  VitalState copyWith({PageState? pageState, int? pageIndex, Vital? v}) {
+  VitalState copyWith({PageState? pageState, int? pageIndex, Vital? v,Account? account}) {
     return VitalState(
       pageState: pageState ?? this.pageState,
       pageIndex: pageIndex ?? this.pageIndex,
+      account: account ?? this.account,
       v: v ?? this.v,
     );
   }
 
   @override
-  List<Object?> get props => [pageState, pageIndex, v];
+  List<Object?> get props => [pageState, pageIndex,account, v];
 }
 
 abstract class VitalEvent {
@@ -57,3 +65,5 @@ class OnSaveEvent extends VitalEvent {
 
   OnSaveEvent(this.v);
 }
+
+class LoadUserSession extends VitalEvent{}
