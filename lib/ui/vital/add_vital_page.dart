@@ -1,28 +1,30 @@
+//for tensor flow model
+import 'dart:typed_data';
+
 import 'package:ehealth/models/vital/vital.dart';
 import 'package:ehealth/ui/account_register/views/gender_tab.dart';
 import 'package:ehealth/ui/home/bloc/vital_chart_bloc.dart';
 import 'package:ehealth/ui/home/bloc/vital_list_bloc.dart';
 import 'package:ehealth/ui/vital/bloc/add_vital_bloc.dart';
+import 'package:ehealth/util/method.dart';
 import 'package:ehealth/util/models/page_state.dart';
 import 'package:ehealth/util/style/customInputDecoration.dart';
 import 'package:ehealth/util/values/colors.dart';
+import 'package:ehealth/util/values/string.dart';
 import 'package:ehealth/util/values/values.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tflite_flutter/tflite_flutter.dart';
 
 import '../../repository/vital_repo.dart';
-//for tensor flow model
-import 'dart:typed_data';
-import 'package:tflite_flutter/tflite_flutter.dart';
 
 class AddVitalPage extends StatelessWidget {
   const AddVitalPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-
     return BlocProvider(
-      create: (context) => VitalBloc(VitalRepo()),
+      create: (context) => VitalBloc(VitalRepo())..add(LoadUserSession()),
       child: _Stateful(),
     );
   }
@@ -31,7 +33,6 @@ class AddVitalPage extends StatelessWidget {
 class _Stateful extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-
     return _State();
   }
 }
@@ -40,6 +41,16 @@ class _State extends State<_Stateful> {
   late Interpreter _interpreter;
   late Float32List _inputData;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _bpSysCtl = TextEditingController();
+  final TextEditingController _bpDiaCtl = TextEditingController();
+  final TextEditingController _pulseCtl = TextEditingController();
+  final TextEditingController _heartRateCtl = TextEditingController();
+  final TextEditingController _spO2Ctl = TextEditingController();
+  final TextEditingController _tempCtl = TextEditingController();
+  final TextEditingController _bloodSugarLevelCtl = TextEditingController();
+  final TextEditingController _respRateCtl = TextEditingController();
+  final TextEditingController _lmpCtl = TextEditingController();
+
   Vital vital = Vital();
 
   @override
@@ -57,8 +68,7 @@ class _State extends State<_Stateful> {
   }
 
   void _prepareInputData(Vital vital) {
-    _inputData = Float32List.fromList([27.0, vital.heartRate.toDouble(), vital.bpSys.toDouble(), vital.bpDia.toDouble(), vital.resp_rate, vital.temp, vital.spO2,vital.bloodSugarLevel,vital.ews.toDouble()]);
-
+    _inputData = Float32List.fromList([27.0, vital.heartRate.toDouble(), vital.bpSys.toDouble(), vital.bpDia.toDouble(), vital.resp_rate, vital.temp, vital.spO2, vital.bloodSugarLevel, vital.ews.toDouble()]);
   }
 
   Future<void> loadModel() async {
@@ -70,12 +80,10 @@ class _State extends State<_Stateful> {
   }
 
   double _runModel() {
-
     var output = 0.0;
-    _interpreter.run(_inputData,output);
+    _interpreter.run(_inputData, output);
     // print the output
     print(output);
-
 
     return output;
   }
@@ -101,106 +109,22 @@ class _State extends State<_Stateful> {
           automaticallyImplyLeading: true,
           actions: [
             TextButton.icon(
-              onPressed: () {
-
+              onPressed: () async {
                 FocusScope.of(context).unfocus();
                 final form = _formKey.currentState;
                 if (form?.validate() ?? false) {
-
                   form?.save();
-                  vital.ews=0;
-                  if(vital.bpSys>=0)
-                  {
-                    if(vital.bpSys>=111 && vital.bpSys<=249) {
-                      vital.ews = vital.ews + 0;
-                    }
-                    else if(vital.bpSys>=101 && vital.bpSys<=110) {
-                      vital.ews = vital.ews + 1;
-                    }
-                    else if(vital.bpSys>=91 && vital.bpSys<=100) {
-                      vital.ews = vital.ews + 2;
-                    }
-                    else {
-                      vital.ews = vital.ews + 3;
-                    }
-                  }
-                  if(vital.pulse>=0)
-                  {
-                    if(vital.pulse>=51 && vital.pulse<=90) {
-                      vital.ews = vital.ews + 0;
-                    }
-                    else if(vital.pulse>=41 && vital.pulse<=50) {
-                      vital.ews = vital.ews + 1;
-                    }
-                    else if(vital.pulse>=91 && vital.pulse<=110) {
-                      vital.ews = vital.ews + 1;
-                    }
-                    else if(vital.pulse>=111 && vital.pulse<=130) {
-                      vital.ews = vital.ews + 2;
-                    }
-                    else {
-                      vital.ews = vital.ews + 3;
-                    }
-                  }
-                  if(vital.spO2>=0)
-                  {
-                    if(vital.spO2>=96) {
-                      vital.ews = vital.ews + 0;
-                    }
-                    else if(vital.spO2>=94 && vital.spO2<=95) {
-                      vital.ews = vital.ews + 1;
-                    }
-                    else if(vital.spO2>=92 && vital.spO2<=93) {
-                      vital.ews = vital.ews + 2;
-                    }
-                    else {
-                      vital.ews = vital.ews + 3;
-                    }
-                  }
-                  if(vital.temp>=0)
-                  {
-                    if(vital.temp>=36.1 && vital.temp<=38.0) {
-                      vital.ews = vital.ews + 0;
-                    }
-                    else if(vital.temp>=35.1 && vital.temp<=36.0) {
-                      vital.ews = vital.ews + 1;
-                    }
-                    else if(vital.temp>=38.1 && vital.temp<=39.0) {
-                      vital.ews = vital.ews + 1;
-                    }
-                    else if(vital.temp>=39.1) {
-                      vital.ews = vital.ews + 2;
-                    }
-                    else {
-                      vital.ews = vital.ews + 3;
-                    }
-                  }
-                  if(vital.resp_rate>=0)
-                  {
-                    if(vital.resp_rate>=12 && vital.resp_rate<=20) {
-                      vital.ews = vital.ews + 0;
-                    }
-                    else if(vital.resp_rate>=9 && vital.resp_rate<=11) {
-                      vital.ews = vital.ews + 1;
-                    }
 
-                    else if(vital.resp_rate>=21 && vital.resp_rate<=24) {
-                      vital.ews = vital.ews + 2;
-                    }
-                    else {
-                      vital.ews = vital.ews + 3;
-                    }
-                  }
+                  vital.ews = calculateEWS(vital);
 
                   if (_interpreter != null) {
                     // Prepare the input data
                     _prepareInputData(vital);
                     final numberOutput = _runModel();
-                    vital.alert=numberOutput.round();
+                    vital.alert = numberOutput.round();
                     print('Number output of machine learning classifier: $numberOutput');
                   }
                   BlocProvider.of<VitalBloc>(context).add(OnSaveEvent(vital));
-
                 }
               },
               icon: const Icon(Icons.check_circle),
@@ -226,6 +150,7 @@ class _State extends State<_Stateful> {
                       children: [
                         Expanded(
                           child: TextFormField(
+                            controller: _bpSysCtl,
                             keyboardType: TextInputType.number,
                             validator: (value) {
                               if (value != null && value.isEmpty) {
@@ -244,6 +169,7 @@ class _State extends State<_Stateful> {
                         const SizedBox(width: m1),
                         Expanded(
                           child: TextFormField(
+                            controller: _bpDiaCtl,
                             keyboardType: TextInputType.number,
                             validator: (value) {
                               if (value != null && value.isEmpty) {
@@ -274,6 +200,7 @@ class _State extends State<_Stateful> {
                     const Text("Pulse", style: TextStyle(fontSize: fontSubTitle, fontWeight: FontWeight.bold)),
                     const SizedBox(height: m1),
                     TextFormField(
+                      controller: _pulseCtl,
                       keyboardType: TextInputType.number,
                       validator: (value) {
                         if (value != null && value.isEmpty) {
@@ -301,6 +228,7 @@ class _State extends State<_Stateful> {
                     const Text("Heart Rate", style: TextStyle(fontSize: fontSubTitle, fontWeight: FontWeight.bold)),
                     const SizedBox(height: m1),
                     TextFormField(
+                      controller: _heartRateCtl,
                       keyboardType: TextInputType.number,
                       validator: (value) {
                         if (value != null && value.isEmpty) {
@@ -325,9 +253,38 @@ class _State extends State<_Stateful> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    const Text("Respiratory Rate", style: TextStyle(fontSize: fontSubTitle, fontWeight: FontWeight.bold)),
+                    const SizedBox(height: m1),
+                    TextFormField(
+                      controller: _respRateCtl,
+                      keyboardType: TextInputType.number,
+                      validator: (value) {
+                        if (value != null && value.isEmpty) {
+                          return "* required";
+                        } else {
+                          double? data = double.tryParse(value!);
+                          return data != null ? null : "* invalid.";
+                        }
+                      },
+                      decoration: customInputDeco("", null, suffix: "min"),
+                      onSaved: (String? data) {
+                        vital.resp_rate = double.parse(data!);
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: m1),
+              Container(
+                color: Colors.white,
+                padding: const EdgeInsets.all(m2),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                     const Text("SPO2", style: TextStyle(fontSize: fontSubTitle, fontWeight: FontWeight.bold)),
                     const SizedBox(height: m1),
                     TextFormField(
+                      controller: _spO2Ctl,
                       keyboardType: TextInputType.number,
                       validator: (value) {
                         if (value != null && value.isEmpty) {
@@ -355,6 +312,7 @@ class _State extends State<_Stateful> {
                     const Text("Body Temperature", style: TextStyle(fontSize: fontSubTitle, fontWeight: FontWeight.bold)),
                     const SizedBox(height: m1),
                     TextFormField(
+                      controller: _tempCtl,
                       keyboardType: TextInputType.number,
                       validator: (value) {
                         if (value != null && value.isEmpty) {
@@ -409,6 +367,7 @@ class _State extends State<_Stateful> {
                         ]),
                         const SizedBox(height: m1),
                         TextFormField(
+                          controller: _bloodSugarLevelCtl,
                           keyboardType: TextInputType.number,
                           validator: (value) {
                             if (value != null && value.isEmpty) {
@@ -424,10 +383,44 @@ class _State extends State<_Stateful> {
                           },
                         ),
                       ],
-                    )
+                    ),
                   ],
                 ),
-              )
+              ),
+              const SizedBox(height: m1),
+              BlocBuilder<VitalBloc, VitalState>(builder: (context, state) {
+                return state.account?.gender == Gender.Female.name
+                    ? Container(
+                        color: Colors.white,
+                        padding: const EdgeInsets.all(m2),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text("Last Menstruation Date", style: TextStyle(fontSize: fontSubTitle, fontWeight: FontWeight.bold)),
+                            const SizedBox(height: m1),
+                            InkWell(
+                              onTap: () {
+                                showAppDatePicker(context, onDateChanged: (val) {
+                                  _lmpCtl.text = changeDateFormat1(val.toString());
+                                  vital.lastMenDate = val.toString();
+                                });
+                              },
+                              child: TextFormField(
+                                enabled: false,
+                                controller: _lmpCtl,
+                                validator: (value) {
+                                  if (value != null && value.isEmpty) {
+                                    return "* required";
+                                  }
+                                },
+                                decoration: customInputDeco("", null),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    : const SizedBox();
+              }),
             ],
           ),
         ),
