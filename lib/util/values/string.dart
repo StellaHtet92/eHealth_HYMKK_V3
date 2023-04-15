@@ -20,6 +20,7 @@ List<String> questionList = [
   "Do you smoke?"
 ];
 
+const String ECG_CHART = "Electrocardiogram";
 const String EWS_CHART = "EWS";
 const String TEMP_CHART = "Temperature (°C)";
 const String BLOOD_PRESSURE_CHART = "Blood Pressure (mmHg)";

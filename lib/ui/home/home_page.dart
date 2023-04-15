@@ -107,6 +107,18 @@ class _State extends State<_Stateful> {
                     Navigator.pushNamed(context, basicInfoRoute);
                   }
                 });
+              }),
+          SpeedDialChild(
+              child: const Icon(Icons.monitor_heart),
+              label: 'ADD ECG',
+              onTap: () {
+                UserPref().getAccount().then((account) {
+                  if (account != null && account.basicInfo) {
+                    Navigator.pushNamed(context, addEcgRoute);
+                  } else {
+                    Navigator.pushNamed(context, basicInfoRoute);
+                  }
+                });
               })
         ],
       ),

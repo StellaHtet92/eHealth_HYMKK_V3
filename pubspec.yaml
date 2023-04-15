@@ -58,6 +58,9 @@ dependencies:
   syncfusion_flutter_charts: ^20.1.56
   syncfusion_flutter_datagrid: ^20.1.52
   tflite_flutter: ^0.9.0
+  flutter_blue: ^0.8.0
+  oscilloscope: ^0.2.0+1
+  http: any
 
 dev_dependencies:
   flutter_test:

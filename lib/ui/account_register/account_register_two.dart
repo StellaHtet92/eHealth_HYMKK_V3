@@ -32,7 +32,7 @@ class _State extends State<_Stateful> {
   final TextEditingController _mobileCtrl = TextEditingController();
   final TextEditingController _dobCtrl = TextEditingController();
   DateTime date = DateTime.now();
-  var countryCode = '+95';
+  var countryCode = '+66';
 
   _onGenderChange(String val) {
     BlocProvider.of<AccountRegisterBloc>(context).add(OnGenderChanged(val));

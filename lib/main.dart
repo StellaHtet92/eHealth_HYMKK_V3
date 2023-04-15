@@ -1,4 +1,5 @@
 import 'package:ehealth/repository/account_repo.dart';
+import 'package:ehealth/repository/ecg_repo.dart';
 import 'package:ehealth/repository/vital_repo.dart';
 import 'package:ehealth/routing/redirect_config.dart';
 import 'package:ehealth/routing/route_names.dart';
@@ -8,6 +9,9 @@ import 'package:ehealth/ui/account_register/account_register_three.dart';
 import 'package:ehealth/ui/account_register/account_register_two.dart';
 import 'package:ehealth/ui/account_register/bloc/account_register_bloc.dart';
 import 'package:ehealth/ui/basic_info/basic_info.dart';
+import 'package:ehealth/ui/ecg/add_ecg_page_one.dart';
+import 'package:ehealth/ui/home/bloc/ecg_chart_bloc.dart';
+import 'package:ehealth/ui/home/bloc/ecg_list_bloc.dart';
 import 'package:ehealth/ui/home/bloc/vital_chart_bloc.dart';
 import 'package:ehealth/ui/home/bloc/vital_list_bloc.dart';
 import 'package:ehealth/ui/home/home_page.dart';
@@ -42,6 +46,12 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => VitalListBloc(VitalRepo()),
         ),
+        BlocProvider(
+          create: (context) => EcgChartBloc(EcgRepo()),
+        ),
+        BlocProvider(
+          create: (context) => EcgListBloc(EcgRepo()),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -64,6 +74,8 @@ class MyApp extends StatelessWidget {
               return getPageRoute(const HomePage(), settings);
             case addVitalRoute:
               return getPageRoute(const AddVitalPage(), settings);
+            case addEcgRoute:
+              return getPageRoute(const AddEcgPageOne(), settings);
             case basicInfoRoute:
               return getPageRoute(const BasicInfoPage(), settings);
           }
