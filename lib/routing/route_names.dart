@@ -6,3 +6,5 @@ const String registerThreeRoute = '/register/3';
 const String homeRoute = '/home';
 const String addVitalRoute = '/vital';
 const String basicInfoRoute  = '/basic/info';
+
+const String profileRoute = '/profile';

@@ -25,6 +25,7 @@ class UserPref {
         return null;
       }
       Map<String, dynamic> acc = jsonDecode(account);
+      print("account info is - ${acc.toString()}");
       return Account.fromJson(acc);
     });
   }

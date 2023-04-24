@@ -53,9 +53,14 @@ class _State extends State<_Stateful> {
           "E-Health",
           style: TextStyle(color: primary),
         ),
-        leading: const Padding(
-          padding: EdgeInsets.only(left: m2, top: m1, bottom: m1),
-          child: Icon(Icons.account_circle, color: primary, size: 40),
+        leading: InkWell(
+          onTap: (){
+            Navigator.pushNamed(context, profileRoute);
+          },
+          child: const Padding(
+            padding: EdgeInsets.only(left: m2, top: m1, bottom: m1),
+            child: Icon(Icons.account_circle, color: primary, size: 40),
+          ),
         ),
         actions: [
           Stack(
