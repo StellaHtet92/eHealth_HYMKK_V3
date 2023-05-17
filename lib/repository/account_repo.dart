@@ -1,6 +1,7 @@
 import 'package:ehealth/core/user_pref.dart';
 import 'package:ehealth/models/account.dart';
 import 'package:ehealth/models/basic_info/basic_info.dart';
+import 'package:ehealth/models/profile.dart';
 import 'package:ehealth/repository/model/error.dart';
 import 'package:ehealth/repository/services/api_result.dart';
 import 'package:ehealth/repository/services/dio_client.dart';
@@ -47,6 +48,16 @@ class AccountRepo{
         return ApiResult.failure(NetworkExceptions.getDioException(e));
       }
     });
+  }
+
+  Future<ApiResult<Profile>> getUserDetail(int userId) async {
+    try {
+      final response = await dioClient.get("/user/getUserDetail?id=$userId");
+      Profile profile = Profile.fromJson(response);
+      return ApiResult.success(profile);
+    } catch (e) {
+      return ApiResult.failure(NetworkExceptions.getDioException(e));
+    }
   }
 
 }

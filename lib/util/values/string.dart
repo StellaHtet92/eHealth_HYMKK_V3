@@ -1,4 +1,4 @@
-String apiUrl = "http://192.168.1.3:8080";
+String apiUrl = "http://172.20.10.5:8080";
 
 enum HomeMenu { Profile , Logout }
 

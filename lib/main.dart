@@ -71,7 +71,8 @@ class MyApp extends StatelessWidget {
               return getPageRoute(const ProfilePage(), settings);
           }
         },
-        initialRoute: page == RedirectPage.login ? loginRoute : homeRoute,
+        //initialRoute: page == RedirectPage.login ? loginRoute : homeRoute,
+        initialRoute: homeRoute,
       ),
     );
   }
