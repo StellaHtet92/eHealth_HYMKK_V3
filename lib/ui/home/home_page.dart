@@ -12,6 +12,7 @@ import 'package:ehealth/util/values/string.dart';
 import 'package:ehealth/util/values/values.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_blue/flutter_blue.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 class HomePage extends StatelessWidget {
@@ -113,13 +114,14 @@ class _State extends State<_Stateful> {
               label: 'ADD ECG',
               onTap: () {
                 UserPref().getAccount().then((account) {
-                  if (account != null && account.basicInfo) {
-                    Navigator.pushNamed(context, addEcgRoute);
+                  Navigator.pushNamed(context, addEcgRoute);
+                  /*if (account != null && account.basicInfo) {
+
                   } else {
                     Navigator.pushNamed(context, basicInfoRoute);
-                  }
+                  }*/
                 });
-              })
+              }),
         ],
       ),
     );

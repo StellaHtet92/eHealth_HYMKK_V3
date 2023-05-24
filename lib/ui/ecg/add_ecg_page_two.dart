@@ -21,12 +21,12 @@ import 'package:flutter_blue/flutter_blue.dart';
 import 'package:tflite_flutter/tflite_flutter.dart';
 
 import '../../repository/ecg_repo.dart';
-import '../home/views/one_line_chart_view_ecg.dart';
 
 class AddEcgPageTwo extends StatelessWidget {
+  final BluetoothDevice device;
 
   const AddEcgPageTwo ({Key? key, required this.device}): super(key: key);
-  final BluetoothDevice device;
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
