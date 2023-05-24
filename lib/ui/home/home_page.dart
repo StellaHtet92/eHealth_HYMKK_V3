@@ -114,12 +114,11 @@ class _State extends State<_Stateful> {
               label: 'ADD ECG',
               onTap: () {
                 UserPref().getAccount().then((account) {
-                  Navigator.pushNamed(context, addEcgRoute);
-                  /*if (account != null && account.basicInfo) {
-
+                  if (account != null && account.basicInfo) {
+                    Navigator.pushNamed(context, addEcgRoute);
                   } else {
                     Navigator.pushNamed(context, basicInfoRoute);
-                  }*/
+                  }
                 });
               }),
         ],
