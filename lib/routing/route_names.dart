@@ -7,3 +7,5 @@ const String homeRoute = '/home';
 const String addVitalRoute = '/vital';
 const String addEcgRoute = '/ecg/';
 const String basicInfoRoute  = '/basic/info';
+
+const String profileRoute = '/profile';

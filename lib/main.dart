@@ -16,6 +16,7 @@ import 'package:ehealth/ui/home/bloc/vital_chart_bloc.dart';
 import 'package:ehealth/ui/home/bloc/vital_list_bloc.dart';
 import 'package:ehealth/ui/home/home_page.dart';
 import 'package:ehealth/ui/login/login_page.dart';
+import 'package:ehealth/ui/profile/profile_page.dart';
 import 'package:ehealth/ui/vital/add_vital_page.dart';
 import 'package:ehealth/util/values/colors.dart';
 import 'package:flutter/material.dart';
@@ -78,6 +79,8 @@ class MyApp extends StatelessWidget {
               return getPageRoute(const AddEcgPageOne(), settings);
             case basicInfoRoute:
               return getPageRoute(const BasicInfoPage(), settings);
+            case profileRoute:
+              return getPageRoute(const ProfilePage(), settings);
           }
         },
         initialRoute: page == RedirectPage.login ? loginRoute : homeRoute,
