@@ -8,12 +8,14 @@ class Ecg {
   late int userid;
   late String ecg;
   late String ecgResults;
+  late List<int> ecgData;
 
   Ecg({
     this.id = 0,
     this.userid = 0,
     this.ecg = "",
-    this.ecgResults = ""
+    this.ecgResults = "",
+    this.ecgData = const []
   });
 
   Ecg.copy(Ecg Ecg) {
@@ -21,6 +23,7 @@ class Ecg {
     userid = Ecg.userid;
     ecg = Ecg.ecg;
     ecgResults = Ecg.ecgResults;
+    ecgData = Ecg.ecgData;
   }
 
   factory Ecg.fromJson(Map<String, dynamic> json) {

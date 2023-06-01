@@ -61,8 +61,8 @@ dependencies:
   flutter_blue: ^0.8.0
   oscilloscope: ^0.2.0+1
   http: any
-
   flutter_speed_dial: ^6.2.0
+
 
 dev_dependencies:
   flutter_test:

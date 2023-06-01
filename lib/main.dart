@@ -10,6 +10,7 @@ import 'package:ehealth/ui/account_register/account_register_two.dart';
 import 'package:ehealth/ui/account_register/bloc/account_register_bloc.dart';
 import 'package:ehealth/ui/basic_info/basic_info.dart';
 import 'package:ehealth/ui/ecg/add_ecg_page_one.dart';
+import 'package:ehealth/ui/ecg/bloc/add_ecg_bloc.dart';
 import 'package:ehealth/ui/home/bloc/ecg_chart_bloc.dart';
 import 'package:ehealth/ui/home/bloc/ecg_list_bloc.dart';
 import 'package:ehealth/ui/home/bloc/vital_chart_bloc.dart';
@@ -52,7 +53,7 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => EcgListBloc(EcgRepo()),
-        ),
+        )
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

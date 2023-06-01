@@ -16,6 +16,10 @@ class EcgBloc extends Bloc<EcgEvent, EcgState> {
       Account? account = await UserPref().getAccount();
       emit(state.copyWith(account: account));
     });
+    on<OnEcgChanged>((event,emit) async{
+      event.ecg.userid = state.account?.userId ?? 0;
+      emit(state.copyWith(ecg: event.ecg));
+    });
     on<OnSaveEvent>((event, emit) async {
       ApiResult<String> apiResult = await repo.saveEcg(event.ecg);
       apiResult.when(success: (String msg) {
