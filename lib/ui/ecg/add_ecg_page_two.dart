@@ -5,7 +5,6 @@ import 'package:ehealth/models/ecg/ecg.dart';
 import 'package:ehealth/ui/ecg/bloc/add_ecg_bloc.dart';
 import 'package:ehealth/ui/home/bloc/ecg_chart_bloc.dart';
 import 'package:ehealth/ui/home/bloc/ecg_list_bloc.dart';
-import 'package:ehealth/ui/home/views/ecg_chart_view.dart';
 import 'package:ehealth/util/models/page_state.dart';
 import 'package:ehealth/util/values/colors.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +13,8 @@ import 'package:flutter_blue/flutter_blue.dart';
 import 'package:tflite_flutter/tflite_flutter.dart';
 
 import '../../repository/ecg_repo.dart';
+import '../../util/values/string.dart';
+import '../home/views/one_line_chart_view_ecg.dart';
 
 class AddEcgPageTwo extends StatelessWidget {
   final BluetoothDevice device;
@@ -187,8 +188,7 @@ class _State extends State<_Stateful> {
             )
           ],
         ),
-        body: Container(
-          child: Form(
+        body: Form(
           key: _formKey,
           child: Column(
             children: [
@@ -226,33 +226,33 @@ class _State extends State<_Stateful> {
                       //print(double.tryParse(currentValue));
                       _inputData.addAll(a);
                     }
-
                     return Column(
                       //mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      //mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Expanded(
-                          flex: 1,
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                              const Text('Current value from Sensor',
+                        Column(
+                          children:<Widget>[
+                              const Text('Current Sensor Value',
                               style: TextStyle(fontSize: 14)),
                               Text('$currentValue mV',
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 24)),
-                              ]),
+                        ],
                         ),
-                        Expanded(
-                          flex: 1,
-                          child: BlocBuilder<EcgBloc, EcgState>(
-                              builder: (context, state) {
-                            return const EcgChartView();
-                          }),
-                        )
+                        /*Expanded(
+
+                            child:BlocBuilder<EcgBloc, EcgState>(
+                                    builder: (context, state) {
+                                      //return OneLineChartViewEcg(state.ecg.ecgData,ECG_CHART);
+                                      return OneLineChartViewEcg(_inputData,ECG_CHART);
+                                    }
+                                    ),
+                        ),*/
+
                       ],
-                    );
+
+                     );
                   } else {
                     return const Text('Check the Stream');
                   }
@@ -262,7 +262,6 @@ class _State extends State<_Stateful> {
           ),
         ),
         ),
-      ),
-    );
+      );
   }
 }

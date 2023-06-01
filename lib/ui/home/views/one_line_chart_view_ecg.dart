@@ -14,7 +14,7 @@ class OneLineChartViewEcg extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 240,
+      height: 100,
       child: SfCartesianChart(
         primaryXAxis: CategoryAxis(isVisible: false),
         primaryYAxis: NumericAxis(),
