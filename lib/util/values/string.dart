@@ -1,5 +1,4 @@
 String apiUrl = "http://192.168.42.152:8080";
-
 enum HomeMenu { Profile , Logout }
 
 enum Gender{

@@ -17,12 +17,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tflite_flutter/tflite_flutter.dart';
 
 import '../../repository/vital_repo.dart';
+//for tensor flow model
+import 'dart:typed_data';
+import 'package:tflite_flutter/tflite_flutter.dart';
 
 class AddVitalPage extends StatelessWidget {
   const AddVitalPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+
     return BlocProvider(
       create: (context) => VitalBloc(VitalRepo())..add(LoadUserSession()),
       child: _Stateful(),
@@ -33,6 +37,7 @@ class AddVitalPage extends StatelessWidget {
 class _Stateful extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
+
     return _State();
   }
 }
@@ -68,7 +73,7 @@ class _State extends State<_Stateful> {
   }
 
   void _prepareInputData(Vital vital) {
-    _inputData = Float32List.fromList([27.0, vital.heartRate.toDouble(), vital.bpSys.toDouble(), vital.bpDia.toDouble(), vital.resp_rate, vital.temp, vital.spO2, vital.bloodSugarLevel, vital.ews.toDouble()]);
+    _inputData = Float32List.fromList([27.0, vital.heartRate.toDouble(), vital.bpSys.toDouble(), vital.bpDia.toDouble(), vital.resp_rate, vital.temp, vital.spO2,vital.bloodSugarLevel,vital.ews.toDouble()]);
   }
 
   Future<void> loadModel() async {
@@ -81,10 +86,9 @@ class _State extends State<_Stateful> {
 
   double _runModel() {
     var output = 0.0;
-    _interpreter.run(_inputData, output);
+    _interpreter.run(_inputData,output);
     // print the output
     print(output);
-
     return output;
   }
 
@@ -109,22 +113,24 @@ class _State extends State<_Stateful> {
           automaticallyImplyLeading: true,
           actions: [
             TextButton.icon(
+
               onPressed: () async {
                 FocusScope.of(context).unfocus();
                 final form = _formKey.currentState;
                 if (form?.validate() ?? false) {
-                  form?.save();
 
+                  form?.save();
                   vital.ews = calculateEWS(vital);
 
                   if (_interpreter != null) {
                     // Prepare the input data
                     _prepareInputData(vital);
                     final numberOutput = _runModel();
-                    vital.alert = numberOutput.round();
+                    vital.alert=numberOutput.round();
                     print('Number output of machine learning classifier: $numberOutput');
                   }
                   BlocProvider.of<VitalBloc>(context).add(OnSaveEvent(vital));
+
                 }
               },
               icon: const Icon(Icons.check_circle),
