@@ -10,6 +10,7 @@ import 'package:ehealth/ui/account_register/account_register_two.dart';
 import 'package:ehealth/ui/account_register/bloc/account_register_bloc.dart';
 import 'package:ehealth/ui/basic_info/basic_info.dart';
 import 'package:ehealth/ui/ecg/add_ecg_page_one.dart';
+import 'package:ehealth/ui/ecg/add_ecg_page_two.dart';
 import 'package:ehealth/ui/ecg/bloc/add_ecg_bloc.dart';
 import 'package:ehealth/ui/home/bloc/ecg_chart_bloc.dart';
 import 'package:ehealth/ui/home/bloc/ecg_list_bloc.dart';
@@ -22,6 +23,7 @@ import 'package:ehealth/ui/vital/add_vital_page.dart';
 import 'package:ehealth/util/values/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_blue/flutter_blue.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -76,8 +78,11 @@ class MyApp extends StatelessWidget {
               return getPageRoute(const HomePage(), settings);
             case addVitalRoute:
               return getPageRoute(const AddVitalPage(), settings);
-            case addEcgRoute:
+            case searchEcgDeviceRoute:
               return getPageRoute(const AddEcgPageOne(), settings);
+            case getEcgResultsRoute:
+              BluetoothDevice param = settings.arguments as BluetoothDevice;
+              return getPageRoute(AddEcgPageTwo(device: param), settings);
             case basicInfoRoute:
               return getPageRoute(const BasicInfoPage(), settings);
             case profileRoute:

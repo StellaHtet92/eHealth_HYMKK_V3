@@ -120,7 +120,7 @@ class _State extends State<_Stateful> {
               onTap: () {
                 UserPref().getAccount().then((account) {
                   if (account != null && account.basicInfo) {
-                    Navigator.pushNamed(context, addEcgRoute);
+                    Navigator.pushNamed(context, searchEcgDeviceRoute);
                   } else {
                     Navigator.pushNamed(context, basicInfoRoute);
                   }

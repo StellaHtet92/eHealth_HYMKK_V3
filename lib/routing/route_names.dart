@@ -5,7 +5,8 @@ const String registerThreeRoute = '/register/3';
 
 const String homeRoute = '/home';
 const String addVitalRoute = '/vital';
-const String addEcgRoute = '/ecg/';
+const String searchEcgDeviceRoute = '/ecg/device';
+const String getEcgResultsRoute = '/ecg/result';
 const String basicInfoRoute  = '/basic/info';
 
 
