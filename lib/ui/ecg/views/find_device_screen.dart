@@ -27,6 +27,7 @@ class FindDevicesScreen extends StatelessWidget {
                         (r) => ScanResultTile(
                           result: r,
                           onTap: () {
+                            Navigator.pop(context);
                             Navigator.pushNamed(context, getEcgResultsRoute, arguments: r.device);
                           }
                         ),

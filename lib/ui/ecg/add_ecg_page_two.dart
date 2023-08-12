@@ -1,11 +1,8 @@
 import 'dart:async';
 import 'dart:convert' show json, utf8;
-import 'dart:typed_data';
 
 import 'package:ehealth/models/ecg/ecg.dart';
 import 'package:ehealth/ui/ecg/bloc/add_ecg_bloc.dart';
-import 'package:ehealth/ui/home/bloc/ecg_chart_bloc.dart';
-import 'package:ehealth/ui/home/bloc/ecg_list_bloc.dart';
 import 'package:ehealth/util/models/page_state.dart';
 import 'package:ehealth/util/values/colors.dart';
 import 'package:ehealth/util/values/values.dart';
@@ -25,7 +22,9 @@ class AddEcgPageTwo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => EcgBloc(EcgRepo())..add(LoadUserSession()),
+      create: (context) =>
+      EcgBloc(EcgRepo())
+        ..add(LoadUserSession()),
       child: _Stateful(device),
     );
   }
@@ -50,6 +49,7 @@ class _State extends State<_Stateful> {
   bool isReady = false;
   bool isRecording = false;
   Ecg ecg = Ecg();
+
   //late Stopwatch _stopwatch;
   //late Timer _timer;
 
@@ -69,7 +69,6 @@ class _State extends State<_Stateful> {
     List<BluetoothService> services = await widget.device.discoverServices();
     for (var service in services) {
       if (service.uuid.toString() == SERVICE_UUID) {
-
         service.characteristics.forEach((characteristic) async {
           if (characteristic.uuid.toString() == CHARACTERISTIC_UUID) {
             characteristic.setNotifyValue(!characteristic.isNotifying);
@@ -81,8 +80,6 @@ class _State extends State<_Stateful> {
               isReady = true;
               //_inputData = [];
             });
-
-
           }
         });
       }
@@ -105,29 +102,54 @@ class _State extends State<_Stateful> {
   Future<bool> _onWillPop() async {
     return await showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Are you sure?'),
-        content: const Text('Do you want to disconnect device and go back?'),
-        actions: [
-          TextButton(onPressed: () => Navigator.of(context).pop(false), child: const Text('No')),
-          TextButton(
-              onPressed: () {
-                disconnectFromDevice();
-                Navigator.of(context).pop(true);
-              },
-              child: const Text('Yes')),
-        ],
-      ),
+      builder: (context) =>
+          AlertDialog(
+            title: const Text('Are you sure?'),
+            content: const Text('Do you want to disconnect device and go back?'),
+            actions: [
+              TextButton(onPressed: () => Navigator.of(context).pop(false), child: const Text('No')),
+              TextButton(
+                  onPressed: () {
+                    disconnectFromDevice();
+                    Navigator.of(context).pop(true);
+                  },
+                  child: const Text('Yes')),
+            ],
+          ),
     );
   }
-  String _dataParser(List<int> dataFromDevice){
+
+  String _dataParser(List<int> dataFromDevice) {
     return utf8.decode(dataFromDevice!);
   }
+
+  showAlertDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Success"),
+          content: Text("ECG data is successfully saved."),
+          actions: [
+            TextButton(
+              child: Text("OK"),
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<EcgBloc, EcgState>(
       listener: (context, state) {
         if (state.pageState.state == PageState.successState) {
+          showAlertDialog(context);
           //BlocProvider.of<EcgListBloc>(context).add(LoadData(loadMore: false));
           //BlocProvider.of<EcgChartBloc>(context).add(InitEcgChart());
           Navigator.pop(context);
@@ -178,8 +200,8 @@ class _State extends State<_Stateful> {
                       ],
                     )),
               ),
-              BlocBuilder<EcgBloc, EcgState >(builder: (context, state) {
-                return  state.ecg.ecgData.isNotEmpty ? OneLineChartViewEcg(_prepareDataForChart(state.ecg), ECG_CHART) : const SizedBox();
+              BlocBuilder<EcgBloc, EcgState>(builder: (context, state) {
+                return state.ecg.ecgData.isNotEmpty ? OneLineChartViewEcg(_prepareDataForChart(state.ecg), ECG_CHART) : const SizedBox();
               }),
               //_inputData.isNotEmpty ? OneLineChartViewEcg(_inputData, ECG_CHART) : const SizedBox()
             ],
@@ -202,10 +224,10 @@ class _State extends State<_Stateful> {
               if (snapshot.connectionState == ConnectionState.active) {
                 var data = snapshot.data;
                 String currentValue = "";
-                if(data != null) {
-                  List<int> a=[];
+                if (data != null) {
+                  List<int> a = [];
                   currentValue = utf8.decode(data);
-                  if((int.tryParse(currentValue)??0) >0) {
+                  if ((int.tryParse(currentValue) ?? 0) > 0) {
                     a.add(int.tryParse(currentValue) ?? 0);
                     _inputData.addAll(a);
                   }
@@ -247,13 +269,14 @@ class _State extends State<_Stateful> {
     );
   }
 
-  List<EcgForChart> _prepareDataForChart(Ecg ecg){
+  List<EcgForChart> _prepareDataForChart(Ecg ecg) {
     List<EcgForChart> list = [];
     ecg.ecgData.asMap().forEach((index, value) {
       list.add(EcgForChart(index, value));
     });
     return list;
   }
+
   @override
   void dispose() {
     //_stopwatch.stop();
