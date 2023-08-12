@@ -50,12 +50,12 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => VitalListBloc(VitalRepo()),
         ),
-        BlocProvider(
+        /*BlocProvider(
           create: (context) => EcgChartBloc(EcgRepo()),
         ),
         BlocProvider(
           create: (context) => EcgListBloc(EcgRepo()),
-        )
+        )*/
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

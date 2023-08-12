@@ -6,16 +6,18 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class OneLineChartViewEcg extends StatelessWidget {
-  final List<int> items;
+  final List<EcgForChart> items;
   final String title;
 
   const OneLineChartViewEcg(this.items, this.title, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 100,
-      child: SfCartesianChart(
+    return
+      //SizedBox(
+     // height: 100,
+     // child:
+      SfCartesianChart(
         primaryXAxis: CategoryAxis(isVisible: false),
         primaryYAxis: NumericAxis(),
         title: ChartTitle(text: title, textStyle: const TextStyle(color: primary, fontSize: 12, fontWeight: FontWeight.bold), alignment: ChartAlignment.near),
@@ -24,18 +26,29 @@ class OneLineChartViewEcg extends StatelessWidget {
           header: '',
           format: 'point.x',
         ),
-        series: <ChartSeries<int, String>>[
-          LineSeries<int, String>(
+        zoomPanBehavior: ZoomPanBehavior(
+          enablePanning: true,
+          enablePinching: true,
+        ),
+        series: <ChartSeries<EcgForChart, int>>[
+          FastLineSeries<EcgForChart, int>(
             dataSource: items,
-            xValueMapper: (int ecg, _) => "",
-            yValueMapper: (int ecg, _) => ecg,
+            xValueMapper: (EcgForChart ecg, _) => ecg.key,
+            yValueMapper: (EcgForChart ecg, _) => ecg.value,
             name: title,
             color: Colors.green,
-            markerSettings: MarkerSettings(isVisible: true, height: 3, width: 3, shape: DataMarkerType.circle, borderWidth: 3, borderColor: Colors.green[900]),
-            dataLabelSettings: const DataLabelSettings(isVisible: true),
+            markerSettings: MarkerSettings(isVisible: false, height: 3, width: 3, shape: DataMarkerType.circle, borderWidth: 3, borderColor: Colors.green[900]),
+            dataLabelSettings: const DataLabelSettings(isVisible: false),
           )
         ],
-      ),
-    );
+      );
+   // );
   }
+}
+
+class EcgForChart{
+  final int key;
+  final int value;
+
+  EcgForChart(this.key,this.value);
 }
